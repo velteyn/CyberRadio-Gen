@@ -4,7 +4,7 @@
 >
 > — the repository
 
-**CyberRadio-Gen** is an AI-powered desktop app that generates custom radio stations for **Cyberpunk 2077**. It writes the anchorman script via a local LLM (LM Studio / Ollama), voices it with ElevenLabs, generates original music through Suno AI, applies gritty FM radio effects, and packages everything as a drop-in RadioExt mod. No recording studio. No voice actors. No musicians. Just you, your GPU, and a few API keys.
+**CyberRadio-Gen** is an AI-powered desktop app that generates custom radio stations for **Cyberpunk 2077**. It writes the anchorman script via a local LLM (LM Studio / Ollama), voices it with ElevenLabs, generates original music through Suno AI, and packages everything as a drop-in RadioExt mod. No recording studio. No voice actors. No musicians. Just you, your GPU, and a few API keys.
 
 ---
 
@@ -17,7 +17,7 @@ ElevenLabs ──→ synthesizes the host voice (free tier: premade voices)
      ↓
 Suno AI ────→ generates original cyberpunk tracks (lyrics + music)
      ↓
-FFmpeg ─────→ applies FM bandpass + compression (cheap car speaker feel)
+FFmpeg ─────→ *optional* FM bandpass + compression (if installed)
      ↓
 RadioExt ───→ metadata.json + numbered MP3s → drop into Cyberpunk 2077
 ```
@@ -35,7 +35,7 @@ RadioExt ───→ metadata.json + numbered MP3s → drop into Cyberpunk 2077
 
 ### Required software
 - **Python 3.10+** (tested on 3.14)
-- **FFmpeg** on your system PATH (for radio FX; gracefully skipped if missing)
+- **FFmpeg** on your system PATH *(optional — applies a gritty in-car FM filter; without it, tracks are kept as clean audio which works perfectly in-game)*
 - **LM Studio** or **Ollama** running locally (for the anchorman script)
 
 ### API keys
