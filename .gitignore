@@ -178,5 +178,6 @@ pyrightconfig.json
 # CyberRadio-Gen specifics
 config.json
 input_music/
+*.zip
 
 # End of https://www.toptal.com/developers/gitignore/api/python
