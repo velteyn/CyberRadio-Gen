@@ -1,0 +1,19 @@
+{
+    "elevenlabs_api_key": "supersecretkey1",
+    "elevenlabs_voice_id": "IKne3meq5aSn9XLyUdCD",
+    "suno_api_key": "supersecretkey2",
+    "llm_provider": "LM Studio",
+    "llm_api_url": "http://localhost:1234/v1",
+    "station_name": "CyberRadio",
+    "station_frequency": "99.7",
+    "station_volume": 1.0,
+    "host_prompt": "You are a cynical, dynamic, fast-talking street-smart radio host in Night City.",
+    "song_count": 3,
+    "song_styles": [
+        "synth-pop, cyberpop, 102 BPM, female-led vocals, octave-doubled hook, arpeggiated analog synth, detuned polysynth chords, punchy drum machine, gated snare reverb, sidechain compression, sub bass pulse, stereo synth leads, call-and-response chorus, neon noir, rebellious triumph, rising breakdown, spacious bridge, hi-fi gloss",
+        "industrial metal, 140 BPM, distorted guitar riffs, aggressive female vocals, heavy kick drums, glitch breaks, cybernetic breakdown, shouted chorus, metallic percussion, digital noise",
+        "dark synthwave, 100 BPM, minor key arpeggios, heavy reverb, pulsing analog bass, melodic leads, cinematic pads, dystopian atmosphere, driving drums, haunting vocals",
+        "cyberpop, 128 BPM, catchy synth hooks, autotuned vocals, four-on-the-floor, bright leads, sidechain pumping, polished production, energetic, futuristic, neon-soaked",
+        "glitch hop, 95 BPM, broken beats, vinyl crackle, deep sub-bass, sampled vocals, lo-fi synths, moody atmosphere, tight drums, dystopian vibe"
+    ]
+}
