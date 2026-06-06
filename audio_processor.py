@@ -48,6 +48,18 @@ def apply_radio_effect(input_path, output_path):
             pass
         return False, f"Audio processing failed: {str(e)}. Original file copied."
 
+def read_radioext_metadata(output_dir):
+    """Read existing metadata.json, return the dict or None."""
+    import json
+    path = os.path.join(output_dir, "metadata.json")
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, 'r') as f:
+            return json.load(f)
+    except Exception:
+        return None
+
 def create_radioext_metadata(station_name, frequency, volume, track_list, output_dir):
     """
     Creates the metadata.json file required for RadioExt.
@@ -59,8 +71,17 @@ def create_radioext_metadata(station_name, frequency, volume, track_list, output
         "displayName": station_name,
         "fm": float(frequency),
         "volume": float(volume),
-        "isStream": False,
-        "tracks": track_list
+        "icon": "UIIcon.RadioHipHop",
+        "customIcon": {
+            "useCustom": False,
+            "inkAtlasPath": "",
+            "inkAtlasPart": ""
+        },
+        "streamInfo": {
+            "isStream": False,
+            "streamURL": ""
+        },
+        "order": track_list
     }
     
     try:

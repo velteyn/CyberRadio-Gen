@@ -30,8 +30,8 @@ output/
   {StationName}/
     001_Anchorman_Intro.mp3
     002_Suno_Song_1.mp3
-    003_Suno_Song_2.mp3
-    004_Suno_Song_3.mp3
+    003_Anchorman_Interlude_1.mp3    (added in continue session)
+    004_Suno_Song_2.mp3               (added in continue session)
     cover.jpg             (optional, from Suno)
     metadata.json         (RadioExt format)
 ```
@@ -63,9 +63,33 @@ output/
 
 ### LM Studio Scope
 - **Anchorman script only** — writes punchy, theatrical radio host lines. That's it.
+  - Intro: "Good morning Night City!" style, references current corpo wars/cyberpsychos.
+  - Interludes (continue mode): station-aware, mentions existing track count and feels like a natural broadcast continuation.
 - **Not used for music** — Suno handles all song content (lyrics + style) on its own.
 
-### Multi-Song Generation (new)
+### Sanity Check (auto on station detect)
+- When `metadata.json` is found, the app runs a quick sanity scan and shows results in the continue panel:
+  - ✅ All tracks on disk match metadata
+  - ❌ Files missing from disk that metadata expects
+  - 📁 Orphaned MP3s on disk not listed in metadata
+  - 🎙️  Music exists but no anchor intro → auto-suggests adding an interlude
+- Findings guide the user to repair missing pieces.
+
+### Repair Mode
+- **🔧 Repair Station** button in the continue panel auto-detects and fixes issues:
+  - Missing intro → sets interlude count to 1 for generation
+  - Orphaned MP3s on disk → adds them directly to `metadata.json`
+  - All-clear → logs that nothing needs repair
+- After repair, the user reviews the auto-set spinboxes and clicks **ADD TO STATION**.
+
+### Continue Mode (adding to an existing station)
+- If `output/{StationName}/metadata.json` exists, the GUI shows a **continue/start-over** panel.
+- **Continue**: adds N anchor interludes + M songs to the existing station. Interlude scripts are mid-show style (not intro). New tracks are numbered after existing ones. Metadata is merged.
+- **Start Over**: deletes all tracks in the station folder, then the user generates fresh.
+- **New station name** = auto-fresh, no continue prompt.
+- This lets users build a station over multiple sessions as credits reset naturally.
+
+### Multi-Song Generation
 - `song_count` config field (default 3) controls how many songs per station.
 - `song_styles` is a list of style prompts (editable in GUI as one-per-line).
 - Each song picks a **random style** from the list, so every generation is different.
@@ -73,7 +97,7 @@ output/
 - Suno generates its own lyrics from that theme (`customMode: False`).
 - Tracks are numbered sequentially: `002_Suno_Song_1.mp3`, `003_Suno_Song_2.mp3`, etc.
 
-### Pipeline Resilience (most recent change)
+### Pipeline Resilience
 - **LLM script**: hard gate — free, local, no credits spent. If it fails, pipeline aborts.
 - **ElevenLabs TTS**: graceful degradation — if it fails, the station is still created with music only.
 - **Suno music**: graceful degradation — if it fails, the station is still created with anchor only.
