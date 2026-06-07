@@ -49,16 +49,30 @@ def apply_radio_effect(input_path, output_path):
         return False, f"Audio processing failed: {str(e)}. Original file copied."
 
 def read_radioext_metadata(output_dir):
-    """Read existing metadata.json, return the dict or None."""
+    """Read existing metadata.json, normalizing old-format keys to new-format, or None."""
     import json
     path = os.path.join(output_dir, "metadata.json")
     if not os.path.exists(path):
         return None
     try:
         with open(path, 'r') as f:
-            return json.load(f)
+            raw = json.load(f)
     except Exception:
         return None
+
+    # ── Normalize old format → new format ────────────────────────────
+    if "tracks" in raw and "order" not in raw:
+        raw["order"] = raw.pop("tracks")
+    if "isStream" in raw and "streamInfo" not in raw:
+        raw["streamInfo"] = {"isStream": raw.pop("isStream"), "streamURL": ""}
+    if "icon" not in raw:
+        raw["icon"] = "UIIcon.RadioElectronic"
+    if "customIcon" not in raw:
+        raw["customIcon"] = {"useCustom": False, "inkAtlasPath": "", "inkAtlasPart": ""}
+    if "streamInfo" not in raw:
+        raw["streamInfo"] = {"isStream": False, "streamURL": ""}
+
+    return raw
 
 def create_radioext_metadata(station_name, frequency, volume, track_list, output_dir, station_icon="UIIcon.RadioElectronic"):
     """

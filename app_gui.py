@@ -487,6 +487,12 @@ class CyberRadioApp(ctk.CTk):
                 justify="left"
             )
             self.continue_frame.pack(fill="x", padx=20, pady=(5, 0), before=self.folder_frame)
+
+            # Only show repair button when there are actual issues
+            if issues:
+                self.btn_repair.pack(side="left", padx=(0, 10))
+            else:
+                self.btn_repair.pack_forget()
         else:
             self.continue_frame.pack_forget()
 
