@@ -168,6 +168,11 @@ class CyberRadioApp(ctk.CTk):
                                                   command=self.start_continuation)
         self.btn_add_to_station.pack(side="left", padx=(0, 10))
 
+        self.btn_update_meta = ctk.CTkButton(btn_row, text="Update Metadata", font=ctk.CTkFont(size=12),
+                                              fg_color="#1f538d", text_color="#fff", hover_color="#143570",
+                                              command=self.update_metadata)
+        self.btn_update_meta.pack(side="left", padx=(0, 10))
+
         self.btn_repair = ctk.CTkButton(btn_row, text="🔧 Repair Station", font=ctk.CTkFont(size=12),
                                          fg_color="#e65100", text_color="#fff", hover_color="#bf360c",
                                          command=self.repair_station)
@@ -586,6 +591,37 @@ class CyberRadioApp(ctk.CTk):
             self.after(0, self._refresh_station_status)
 
         threading.Thread(target=run_repair, daemon=True).start()
+
+    def update_metadata(self):
+        """Rewrite metadata.json with current settings — no API calls, instant."""
+        self.save_settings()
+        output_dir = self._station_output_dir()
+        if not os.path.isdir(output_dir):
+            self.log("❌ No station folder found. Generate a station first.")
+            return
+
+        actual_tracks = sorted(
+            [f for f in os.listdir(output_dir) if f.lower().endswith(".mp3")],
+            key=lambda x: int(x[:3]) if x[:3].isdigit() else 999
+        )
+        if not actual_tracks:
+            self.log("❌ No MP3 files found in station folder.")
+            return
+
+        from audio_processor import create_radioext_metadata
+        ok = create_radioext_metadata(
+            self.config["station_name"],
+            self.config["station_frequency"],
+            self.config["station_volume"],
+            actual_tracks,
+            output_dir,
+            self.config.get("station_icon", "UIIcon.RadioElectronic")
+        )
+        if ok:
+            self.log(f"✅ Metadata updated — icon, name, frequency applied to {len(actual_tracks)} track(s).")
+        else:
+            self.log("❌ Failed to write metadata.json.")
+        self._refresh_station_status()
 
     def start_continuation(self):
         self.save_settings()
