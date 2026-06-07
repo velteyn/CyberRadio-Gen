@@ -2,7 +2,7 @@ import customtkinter as ctk
 import os
 import shutil
 import threading
-from config_manager import load_config, save_config
+from config_manager import load_config, save_config, ICON_OPTIONS
 from pipeline import run_generation_pipeline
 from tts_client import get_user_info, list_voices
 from suno_client import get_suno_credits
@@ -124,6 +124,19 @@ class CyberRadioApp(ctk.CTk):
         styles = self.config.get("song_styles", [])
         for s in styles:
             self.text_song_styles.insert("end", s + "\n")
+
+        ctk.CTkLabel(self.station_frame, text="Station Icon:").grid(row=2, column=0, padx=10, pady=(10, 10), sticky="w")
+        self.icon_var = ctk.StringVar()
+        icon_labels = [name for name, _ in ICON_OPTIONS]
+        self.icon_dropdown = ctk.CTkOptionMenu(self.station_frame, variable=self.icon_var, values=icon_labels, width=180, dynamic_resizing=False)
+        self.icon_dropdown.grid(row=2, column=1, columnspan=3, padx=10, pady=(10, 10), sticky="w")
+        current_icon = self.config.get("station_icon", "UIIcon.RadioElectronic")
+        for name, val in ICON_OPTIONS:
+            if val == current_icon:
+                self.icon_var.set(name)
+                break
+        else:
+            self.icon_var.set(icon_labels[0])
 
         # ── Continue Frame (hidden if station doesn't exist) ─────────────────
         self.continue_frame = ctk.CTkFrame(self.right_panel, fg_color="#1a1a2e")
@@ -385,6 +398,11 @@ class CyberRadioApp(ctk.CTk):
         self.config["llm_api_url"] = self.entry_llm_url.get()
         self.config["station_name"] = self.entry_station_name.get()
         self.config["station_frequency"] = self.entry_station_freq.get()
+        icon_label = self.icon_var.get()
+        for name, val in ICON_OPTIONS:
+            if name == icon_label:
+                self.config["station_icon"] = val
+                break
         try:
             self.config["song_count"] = max(1, int(self.entry_song_count.get()))
         except ValueError:
@@ -447,7 +465,7 @@ class CyberRadioApp(ctk.CTk):
         meta = read_radioext_metadata(output_dir)
         if meta and meta.get("order"):
             count = len(meta["order"])
-            name = meta.get("displayName", self.entry_station_name.get())
+            name = meta.get("displayName", f"{self.entry_station_freq.get()} {self.entry_station_name.get()}")
 
             issues = self._sanity_check_station(output_dir, meta)
             lines = [f"📀 Station \"{name}\" has {count} track(s)."]
@@ -559,7 +577,8 @@ class CyberRadioApp(ctk.CTk):
                 self.config["station_frequency"],
                 self.config["station_volume"],
                 final_tracks,
-                output_dir
+                output_dir,
+                self.config.get("station_icon", "UIIcon.RadioElectronic")
             )
             self.after(0, lambda: self.log(f"  ✅ metadata.json rebuilt with {len(final_tracks)} track(s)."))
 

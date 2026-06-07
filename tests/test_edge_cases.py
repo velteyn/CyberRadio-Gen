@@ -80,10 +80,10 @@ def radio_fail_copy(inp, out):
     return (False, "FM filter failed")
 
 
-def meta_ok(name, freq, vol, tracks, output_dir):
+def meta_ok(name, freq, vol, tracks, output_dir, station_icon="UIIcon.RadioElectronic"):
     os.makedirs(output_dir, exist_ok=True)
     data = {
-        "displayName": name,
+        "displayName": f"{freq} {name}",
         "fm": float(freq),
         "volume": float(vol),
         "icon": "UIIcon.RadioHipHop",
@@ -247,7 +247,7 @@ class TestFilesystemEdgeCases(unittest.TestCase):
         self.assertTrue(ok)
         with open(os.path.join(self.tmp, "metadata.json")) as f:
             data = json.load(f)
-        self.assertEqual(data["displayName"], "東京サイバーラジオ")
+        self.assertEqual(data["displayName"], "99.7 東京サイバーラジオ")
 
     # ── 6. Empty output directory ─────────────────────────────────────────
 

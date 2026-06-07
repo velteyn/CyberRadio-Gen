@@ -65,7 +65,7 @@ class TestAudioProcessor(unittest.TestCase):
         self.assertTrue(ok)
         with open(os.path.join(self.tmp, "metadata.json")) as f:
             data = json.load(f)
-        self.assertEqual(data["displayName"], "Radio99")
+        self.assertEqual(data["displayName"], "99.7 Radio99")
         self.assertEqual(data["fm"], 99.7)
         self.assertEqual(data["volume"], 1.0)
         self.assertEqual(data["streamInfo"]["isStream"], False)
@@ -259,11 +259,11 @@ def song_fail_then_ok():
     return _fn
 
 
-def meta_ok(name, freq, vol, tracks, output_dir):
+def meta_ok(name, freq, vol, tracks, output_dir, station_icon="UIIcon.RadioElectronic"):
     """Mock create_radioext_metadata — writes valid JSON."""
     os.makedirs(output_dir, exist_ok=True)
     data = {
-        "displayName": name,
+        "displayName": f"{freq} {name}",
         "fm": float(freq),
         "volume": float(vol),
         "icon": "UIIcon.RadioHipHop",

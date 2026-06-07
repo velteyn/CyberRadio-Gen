@@ -317,7 +317,8 @@ def run_generation_pipeline(config, log_callback, mode="fresh",
         config["station_frequency"],
         config["station_volume"],
         actual_tracks,
-        output_dir
+        output_dir,
+        config.get("station_icon", "UIIcon.RadioElectronic")
     )
     if not ok:
         log_err("Failed to write metadata.json. Check folder permissions.")

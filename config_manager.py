@@ -3,6 +3,18 @@ import os
 
 CONFIG_FILE = "config.json"
 
+ICON_OPTIONS = [
+    ("Neon/EDM", "UIIcon.RadioElectronic"),
+    ("Hip Hop", "UIIcon.RadioHipHop"),
+    ("Rock", "UIIcon.RadioRock"),
+    ("Pop", "UIIcon.RadioPop"),
+    ("Jazz", "UIIcon.RadioJazz"),
+    ("Metal", "UIIcon.RadioMetal"),
+    ("Classical", "UIIcon.RadioClassical"),
+    ("Absynth", "UIIcon.alcohol_absynth"),
+    ("Industrial", "UIIcon.RadioIndustrial"),
+]
+
 DEFAULT_CONFIG = {
     "elevenlabs_api_key": "",
     "elevenlabs_voice_id": "IKne3meq5aSn9XLyUdCD",  # Charlie - Deep, Confident, Energetic (ElevenLabs free tier)
@@ -12,6 +24,7 @@ DEFAULT_CONFIG = {
     "station_name": "CyberRadio",
     "station_frequency": "99.7",
     "station_volume": 1.0,
+    "station_icon": "UIIcon.RadioElectronic",
     "host_prompt": "You are a cynical, dynamic, fast-talking street-smart radio host in Night City.",
     "song_count": 3,
     "song_styles": [

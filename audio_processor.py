@@ -60,18 +60,19 @@ def read_radioext_metadata(output_dir):
     except Exception:
         return None
 
-def create_radioext_metadata(station_name, frequency, volume, track_list, output_dir):
+def create_radioext_metadata(station_name, frequency, volume, track_list, output_dir, station_icon="UIIcon.RadioElectronic"):
     """
     Creates the metadata.json file required for RadioExt.
     track_list should be a list of filenames like ["001_Intro.mp3", "002_Song.mp3"]
+    displayName is auto-formatted as "{frequency} {station_name}" to match game convention.
     """
     import json
     
     metadata = {
-        "displayName": station_name,
+        "displayName": f"{frequency} {station_name}",
         "fm": float(frequency),
         "volume": float(volume),
-        "icon": "UIIcon.RadioHipHop",
+        "icon": station_icon,
         "customIcon": {
             "useCustom": False,
             "inkAtlasPath": "",
