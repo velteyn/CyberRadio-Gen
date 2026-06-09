@@ -117,17 +117,7 @@ Write-Host "  Or just run (double-click):" -ForegroundColor White
 Write-Host "    run.bat" -ForegroundColor Gray
 Write-Host ""
 
-# Optionally create run.bat for double-click
-if (-not (Test-Path "run.bat")) {
-    @"
-@echo off
-call "%~dp0venv\Scripts\activate"
-python "%~dp0main.py"
-pause
-"@ | Out-File -FilePath "run.bat" -Encoding ASCII
-    Write-Host "  ✅ Created run.bat — double-click to launch the app." -ForegroundColor Green
-    Write-Host ""
-}
-
+Write-Host "  ℹ️  Double-click run.bat to launch the app (already created)." -ForegroundColor Gray
+Write-Host ""
 Write-Host "Press any key to exit..."
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
